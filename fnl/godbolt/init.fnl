@@ -23,7 +23,8 @@
                          :c {:compiler :cg132 :options {}}
                          :rust {:compiler :r1730 :options {}}}
              :quickfix {:enable false :auto_open false}
-             :url "https://godbolt.org"})
+             :url "https://godbolt.org"
+             :flags_prompt true})
 
 (fn setup [cfg]
   (if (= 1 (fun.has :nvim-0.6)
