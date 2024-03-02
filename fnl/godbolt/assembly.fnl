@@ -138,10 +138,7 @@
   (let [lines (api.nvim_buf_get_lines 0 (dec begin) end true)
         text (fun.join lines "\n")
         curl-cmd (m> :godbolt.cmd :build-cmd compiler text options :asm)
-        time (os.date :*t)
-        hour time.hour
-        min time.min
-        sec time.sec]
+        flags (or options.userArguments "")]
     (fun.jobstart curl-cmd
                   {:on_exit (fn [_ _ _]
                               (let [file (io.open :godbolt_response_asm.json :r)
@@ -150,8 +147,7 @@
                                 (os.remove :godbolt_request_asm.json)
                                 (os.remove :godbolt_response_asm.json)
                                 (display (vim.json.decode response) begin
-                                         (fmt "%s %02d:%02d:%02d" compiler hour
-                                              min sec)
+                                         (fmt "%s %s" compiler flags)
                                          reuse?)))})))
 
 {: map : nsid : pre-display : update-hl : clear}
