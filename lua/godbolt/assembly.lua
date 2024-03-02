@@ -147,13 +147,17 @@ local function pre_display(begin, _end, compiler, options, reuse_3f)
   local text = fun.join(lines, "\n")
   local curl_cmd = require("godbolt.cmd")["build-cmd"](compiler, text, options, "asm")
   local flags = (options.userArguments or "")
+  local time = os.date("*t")
+  local hour = time.hour
+  local min = time.min
+  local sec = time.sec
   local function _18_(_, _0, _1)
     local file = io.open("godbolt_response_asm.json", "r")
     local response = file:read("*all")
     file:close()
     os.remove("godbolt_request_asm.json")
     os.remove("godbolt_response_asm.json")
-    return display(vim.json.decode(response), begin, fmt("%s %s", compiler, flags), reuse_3f)
+    return display(vim.json.decode(response), begin, fmt("%s %s @%02d:%02d:%02d", compiler, flags, hour, min, sec), reuse_3f)
   end
   return fun.jobstart(curl_cmd, {on_exit = _18_})
 end
