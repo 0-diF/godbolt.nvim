@@ -1,6 +1,6 @@
 local fun = vim.fn
 local api = vim.api
-local config = {languages = {cpp = {compiler = "g132", options = {}}, c = {compiler = "cg132", options = {}}, rust = {compiler = "r1730", options = {}}}, quickfix = {auto_open = false, enable = false}, url = "https://godbolt.org"}
+local config = {languages = {cpp = {compiler = "g132", options = {}}, c = {compiler = "cg132", options = {}}, rust = {compiler = "r1730", options = {}}}, quickfix = {auto_open = false, enable = false}, url = "https://godbolt.org", flags_prompt = true}
 local function setup(cfg)
   local _4_
   do

@@ -38,11 +38,13 @@
         ft vim.bo.filetype
         config (. (require :godbolt) :config)
         compiler (or compiler (. config.languages ft :compiler))]
-    (var options (if (. config.languages ft)
-                     (vim.deepcopy (. config.languages ft :options))
-                     {}))
-    (let [flags (vim.fn.input {:prompt "Flags: "
-                               :default (or options.userArguments "")})]
+      (var options (if (. config.languages ft)
+                       (vim.deepcopy (. config.languages ft :options))
+                       {}))
+      (var flags (if (. config.flags_prompt)
+                     (vim.fn.input {:prompt "Flags: "
+                                    :default (or options.userArguments "")})
+                     (or options.userArguments "")))
       (tset options :userArguments flags)
       (let [fuzzy? (accumulate [matches false k v (pairs [:telescope
                                                           :fzf
@@ -55,6 +57,6 @@
             (do
               (pre-display begin end compiler options reuse?)
               (when vim.b.godbolt_exec
-                (execute begin end compiler options reuse?))))))))
+                (execute begin end compiler options reuse?)))))))
 
 {: build-cmd : godbolt}
