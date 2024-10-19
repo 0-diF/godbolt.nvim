@@ -1,4 +1,4 @@
-;  Copyright (C) 2021-2023 Chinmay Dalal
+;  Copyright (C) 2021-2024 Chinmay Dalal
 ;
 ;  This file is part of godbolt.nvim.
 ;
@@ -46,7 +46,7 @@
                                     :default (or options.userArguments "")})
                      (or options.userArguments "")))
       (tset options :userArguments flags)
-      (let [fuzzy? (accumulate [matches false k v (pairs [:telescope
+      (let [fuzzy? (accumulate [matches false _ v (pairs [:telescope
                                                           :fzf
                                                           :skim
                                                           :fzy])]
