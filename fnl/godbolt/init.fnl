@@ -1,4 +1,4 @@
-;  Copyright (C) 2021-2023 Chinmay Dalal
+;  Copyright (C) 2021-2024 Chinmay Dalal
 ;
 ;  This file is part of godbolt.nvim.
 ;
@@ -19,19 +19,24 @@
 (local fun vim.fn)
 (local api vim.api)
 
-(var config {:languages {:cpp {:compiler :g132 :options {}}
-                         :c {:compiler :cg132 :options {}}
-                         :rust {:compiler :r1730 :options {}}}
-             :quickfix {:enable false :auto_open false}
-             :url "https://godbolt.org"
-             :flags_prompt true})
+(local M {:config {:languages {:cpp {:compiler :g132 :options {}}
+                               :c {:compiler :cg132 :options {}}
+                               :rust {:compiler :r1730 :options {}}}
+                   :auto_cleanup true
+                   :highlight {:cursor :Visual
+                               :static ["#222222"
+                                        "#333333"
+                                        "#444444"
+                                        "#555555"
+                                        "#444444"
+                                        "#333333"]}
+                   :quickfix {:enable false :auto_open false}
+                   :url "https://godbolt.org"
+                   :flags_prompt true}})
 
-(fn setup [cfg]
-  (if (= 1 (fun.has :nvim-0.6)
-         (do
-           (when cfg
-             (each [k v (pairs cfg)]
-               (tset config k v)))))
+(fn M.setup [user-config]
+  (if (= 1 (fun.has :nvim-0.6))
+      (set M.config (vim.tbl_deep_extend :force M.config user-config))
       (api.nvim_err_writeln "neovim 0.6+ is required")))
 
-{: config : setup}
+M
